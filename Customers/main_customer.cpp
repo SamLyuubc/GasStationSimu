@@ -6,9 +6,9 @@
 int main()
 {
 	struct CustomerInfo test1 {95, 10, "123456789" };
-	struct CustomerInfo test2 { 93, 10, "123456789" };
-	struct CustomerInfo test3 { 91, 10, "123456789" };
-	struct CustomerInfo test4 { 89, 10, "12345689" };
+	struct CustomerInfo test2 { 93, 10, "7788613563" };
+	struct CustomerInfo test3 { 91, 10, "2323232323" };
+	struct CustomerInfo test4 { 89, 10, "23245566666" };
 
 	string pipename_1 = "MypipPump1";
 	string pipename_2 = "MypipPump2";

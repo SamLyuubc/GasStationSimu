@@ -29,9 +29,13 @@ public:
 		r1.Wait();
 		CPipe	MyPipe(pipeline_name_);							// Create a pipe with the name "Pipe1"
 		CMutex  mutex(pipeline_name_);
+		CMutex  mutex_p("ScreenCustomer");
 
 		for (int x = 500; x < 10000; x++) {
 			printf("customer is sending gas grade: %d\n",customer_info_.gas_grade);
+			mutex_p.Wait();
+			std::cout << "Customer Card is: " << customer_info_.card_number << "\n";
+			mutex_p.Signal();
 			mutex.Wait();
 			MyPipe.Write(&customer_info_, sizeof(struct CustomerInfo));
 			mutex.Signal();

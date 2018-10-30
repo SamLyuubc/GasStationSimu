@@ -43,7 +43,7 @@ public:
 		cs_name = "Cs" + pump_name_;
 		ps_name = "Ps" + pump_name_;
 		datapool_name = "DataPool" + pump_name_;
-		screen_mutex_name = "ScreenMutex";
+		screen_mutex_name = "ScreenCenter";
 
 		CMutex screen_mutex(screen_mutex_name);
 
@@ -61,6 +61,8 @@ public:
 			screen_mutex.Wait();
 			MOVE_CURSOR(pos_x_, pos_y_);
 			printf("Pump selcting Grade: %d\n", datapool_ptr->gas_grade);
+			fflush(stdout);
+			std::cout << "Customer with card: " << datapool_ptr->card_number;
 			fflush(stdout);
 			/*printf("Pump Status is: %d\n", datapool_ptr->status);
 			fflush(stdout);*/
