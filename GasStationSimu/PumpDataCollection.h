@@ -14,8 +14,9 @@ enum
 struct StationInfo
 {
 	int gas_grade;
+	int volume;
 	int status;
-	string card_number;
+	long long card_number;
 };
 
 class PumpDataCollection : public ActiveClass		// A thread to use a rendezvous, args points to an int to identify the thread number
@@ -62,7 +63,8 @@ public:
 			MOVE_CURSOR(pos_x_, pos_y_);
 			printf("Pump selcting Grade: %d\n", datapool_ptr->gas_grade);
 			fflush(stdout);
-			std::cout << "Customer with card: " << datapool_ptr->card_number;
+			printf("Customer with card: %lld\n", datapool_ptr->card_number);
+			//std::cout << "Customer with card: " << datapool_ptr->card_number;
 			fflush(stdout);
 			/*printf("Pump Status is: %d\n", datapool_ptr->status);
 			fflush(stdout);*/

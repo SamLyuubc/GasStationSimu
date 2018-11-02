@@ -2,14 +2,14 @@
 #include "../GasStationSimu/rt.h"
 #include <ctime>
 
-CRendezvous r1("StationRendezvousStart", 12);
+//CRendezvous r1("StationRendezvousStart", 12);
 //Name:Yujia Lyu Suheng He	
 //Student Number:55054134 51513133
 struct CustomerInfo
 {
 	int gas_grade;
 	int volume;
-	string card_number;
+	long long card_number;
 	string name;
 };
 
@@ -27,6 +27,7 @@ private:
 
 public:
 	Customer();
+	Customer(string pipename);
 	~Customer();
 	int	main();
 };

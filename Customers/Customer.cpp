@@ -1,9 +1,19 @@
 #include "Customer.h"
 #include "../GasStationSimu/rt.h"
 
+CRendezvous r1("StationRendezvousStart", 12);
+
 Customer::Customer()
 {
-	srand(time(0));
+	customer_info_.card_number = createRandomCard();
+	customer_info_.gas_grade = createRandomGasGrade();
+	customer_info_.name = createRandomName();
+	customer_info_.volume = createRandomVolume();
+}
+
+Customer::Customer(string pipename)
+{
+	pipeline_name_ = pipename;
 	customer_info_.card_number = createRandomCard();
 	customer_info_.gas_grade = createRandomGasGrade();
 	customer_info_.name = createRandomName();
@@ -23,7 +33,6 @@ int Customer::main()
 	CMutex  mutex_p("ScreenCustomer");
 
 	for (int x = 500; x < 10000; x++) {
-		printf("customer is sending gas grade: %d\n", customer_info_.gas_grade);
 		mutex_p.Wait();
 		std::cout << "Customer Card is: " << customer_info_.card_number << "\n";
 		std::cout << "Customer Name is: " << customer_info_.name << "\n";
@@ -42,8 +51,6 @@ string Customer::createRandomName()
 	//Array of First Names
 	string Names[] = { "Harley", "Rahul", "Armin", "Alexander", "Renee",  "Brandon", "Herman", "Evelyn", "Sasha", "Susan", "Monika", "Sophia", "Harish", "Zenia", "Mela", "Cameron", "Mira", "Anita" };
 
-	//Choosing a random first name and last name
-	srand(time(nullptr));
 
 	int lengthFirstName = sizeof(Names) / sizeof(Names[0]);
 
@@ -69,8 +76,7 @@ long long Customer::createRandomCard()
 
 int Customer::createRandomGasGrade() 
 {
-	srand(time(nullptr));
-	return rand() %  GAS_GRADE_NUM;
+	return (rand() %  (GAS_GRADE_NUM-1) + 1);
 }
 
 double Customer::createRandomVolume() 

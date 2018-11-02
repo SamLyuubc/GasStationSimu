@@ -116,6 +116,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\GasStationSimu\rt.cpp" />
+    <ClCompile Include="Customer.cpp" />
     <ClCompile Include="main_customer.cpp" />
   </ItemGroup>
   <ItemGroup>
