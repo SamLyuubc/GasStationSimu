@@ -34,13 +34,13 @@ private:
 	struct CustomerInfo customer_info_;
 
 	// Same name to the datapipeline
-	string name_;
+	int pump_num_;
 	int storage_;
 
 public:
-	Pump(string name) 
+	Pump(int num) 
 	{
-		name_ = name;
+		pump_num_ = num;
 		storage_ = 100;
 	};
 
@@ -53,13 +53,13 @@ public:
 		// construct name for mutex structure
 		std::string pipe_name, cs_name, ps_name, datapool_name;
 		// ex. MypipPump1
-		pipe_name = "Mypip" + name_;
+		pipe_name = "MypipPump" + to_string(pump_num_);
 		// ex. CsPump1
-		cs_name = "Cs" + name_;
+		cs_name = "CsPump" + to_string(pump_num_);
 		// ex. PsPump1
-		ps_name = "Ps" + name_;
+		ps_name = "PsPump" + to_string(pump_num_);
 		// ex. DataPoolPump1
-		datapool_name = "DataPool" + name_;
+		datapool_name = "DataPoolPump" + to_string(pump_num_);
 
 		// Initialize mutex structure
 		CPipe data_pipeline(pipe_name, 1024);

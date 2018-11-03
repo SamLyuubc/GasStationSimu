@@ -5,10 +5,10 @@
 
 int main() 
 {
-	Pump pump_1("Pump1");
-	Pump pump_2("Pump2");
-	Pump pump_3("Pump3");
-	Pump pump_4("Pump4");
+	Pump pump_1(1);
+	Pump pump_2(2);
+	Pump pump_3(3);
+	Pump pump_4(4);
 
 	pump_1.Resume();
 	pump_2.Resume();
