@@ -63,6 +63,7 @@ public:
 			MOVE_CURSOR(pos_x_, pos_y_);
 			printf("Pump selcting Grade: %d\n", datapool_ptr->gas_grade);
 			fflush(stdout);
+			MOVE_CURSOR(pos_x_, pos_y_ + 1);
 			printf("Customer with card: %lld\n", datapool_ptr->card_number);
 			//std::cout << "Customer with card: " << datapool_ptr->card_number;
 			fflush(stdout);
