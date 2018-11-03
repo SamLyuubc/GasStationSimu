@@ -14,8 +14,9 @@ enum
 struct StationInfo
 {
 	int gas_grade;
+	int volume;
 	int status;
-	string card_number;
+	long long card_number;
 };
 
 class PumpDataCollection : public ActiveClass		// A thread to use a rendezvous, args points to an int to identify the thread number
@@ -43,7 +44,7 @@ public:
 		cs_name = "Cs" + pump_name_;
 		ps_name = "Ps" + pump_name_;
 		datapool_name = "DataPool" + pump_name_;
-		screen_mutex_name = "ScreenMutex";
+		screen_mutex_name = "ScreenCenter";
 
 		CMutex screen_mutex(screen_mutex_name);
 
@@ -61,6 +62,9 @@ public:
 			screen_mutex.Wait();
 			MOVE_CURSOR(pos_x_, pos_y_);
 			printf("Pump selcting Grade: %d\n", datapool_ptr->gas_grade);
+			fflush(stdout);
+			printf("Customer with card: %lld\n", datapool_ptr->card_number);
+			//std::cout << "Customer with card: " << datapool_ptr->card_number;
 			fflush(stdout);
 			/*printf("Pump Status is: %d\n", datapool_ptr->status);
 			fflush(stdout);*/

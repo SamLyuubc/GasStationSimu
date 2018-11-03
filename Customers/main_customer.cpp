@@ -5,20 +5,16 @@
 
 int main()
 {
-	struct CustomerInfo test1 {95, 10, "123456789" };
-	struct CustomerInfo test2 { 93, 10, "123456789" };
-	struct CustomerInfo test3 { 91, 10, "123456789" };
-	struct CustomerInfo test4 { 89, 10, "123456789" };
-
+	srand(time(NULL));
 	string pipename_1 = "MypipPump1";
 	string pipename_2 = "MypipPump2";
 	string pipename_3 = "MypipPump3";
 	string pipename_4 = "MypipPump4";
 
-	Customer customer_1(test1,pipename_1);
-	Customer customer_2(test2, pipename_2);
-	Customer customer_3(test3, pipename_3);
-	Customer customer_4(test4, pipename_4);
+	Customer customer_1(pipename_1);
+	Customer customer_2(pipename_2);
+	Customer customer_3(pipename_3);
+	Customer customer_4(pipename_4);
 
 	customer_1.Resume();
 	customer_2.Resume();

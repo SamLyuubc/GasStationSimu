@@ -13,15 +13,17 @@ enum
 struct StationInfo
 {
 	int gas_grade;
+	int volume;
 	int status;
-	string card_number;
+	long long card_number;
 };
 
-struct CustomerInfo 
+struct CustomerInfo
 {
 	int gas_grade;
 	int volume;
-	string card_number;
+	long long card_number;
+	string name;
 };
 
 
@@ -74,6 +76,7 @@ public:
 			cs.Wait();
 			printf("Passing gas grade: %d from Pump ..\n",customer_info_.gas_grade);
 			datapool_ptr->card_number = customer_info_.card_number;
+			datapool_ptr->volume = customer_info_.volume;
 			datapool_ptr->gas_grade = customer_info_.gas_grade;
 			datapool_ptr->status = STATUS_IN_USE;
 			ps.Signal();
