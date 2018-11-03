@@ -3,20 +3,22 @@
 #include "Pump.h"
 #include "../rt.h"
 
+const int NUM_PUMPS = 4;
+Pump *pumps[NUM_PUMPS];
+
 int main() 
 {
-	Pump pump_1("Pump1");
-	Pump pump_2("Pump2");
-	Pump pump_3("Pump3");
-	Pump pump_4("Pump4");
+	for (int i = 0; i < NUM_PUMPS; i++)
+	{
+		pumps[i] = new Pump(i);
+		pumps[i]->Resume();
+	
 
-	pump_1.Resume();
-	pump_2.Resume();
-	pump_3.Resume();
-	pump_4.Resume();
+	}
 
-	pump_1.WaitForThread();
-	pump_2.WaitForThread();
-	pump_3.WaitForThread();
-	pump_4.WaitForThread();
+	for (int i = 0; i < NUM_PUMPS; i++)
+	{
+		pumps[i]->WaitForThread();
+
+	}
 }
