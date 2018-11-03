@@ -6,10 +6,10 @@
 int main()
 {
 	srand(time(NULL));
-	string pipename_1 = "MypipPump1";
-	string pipename_2 = "MypipPump2";
-	string pipename_3 = "MypipPump3";
-	string pipename_4 = "MypipPump4";
+	string pipename_1 = "MypipPump0";
+	string pipename_2 = "MypipPump1";
+	string pipename_3 = "MypipPump2";
+	string pipename_4 = "MypipPump3";
 
 	Customer customer_1(pipename_1);
 	Customer customer_2(pipename_2);

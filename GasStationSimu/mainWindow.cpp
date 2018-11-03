@@ -5,10 +5,10 @@
 
 int main()
 {
-	PumpDataCollection collection_1("Pump1", 0, 10);	// create 5 threads and pass them a thread number
+	PumpDataCollection collection_1("Pump0", 0, 10);	// create 5 threads and pass them a thread number
 	PumpDataCollection collection_2("Pump2", 40, 10);
 	PumpDataCollection collection_3("Pump3", 0, 15);
-	PumpDataCollection collection_4("Pump4", 40, 15);
+	PumpDataCollection collection_4("Pump1", 40, 15);
 
 	collection_1.Resume();
 	collection_2.Resume();
