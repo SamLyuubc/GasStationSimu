@@ -1,7 +1,7 @@
 #include "Customer.h"
 #include "../GasStationSimu/rt.h"
 
-CRendezvous r1("StationRendezvousStart", 12);
+CRendezvous r1("StationRendezvousStart", 16);
 
 Customer::Customer()
 {
@@ -49,14 +49,17 @@ int Customer::main()
 string Customer::createRandomName() 
 {
 	//Array of First Names
-	string Names[] = { "Harley", "Rahul", "Armin", "Alexander", "Renee",  "Brandon", "Herman", "Evelyn", "Sasha", "Susan", "Monika", "Sophia", "Harish", "Zenia", "Mela", "Cameron", "Mira", "Anita" };
+	string Names[] = { "Sam", "Tony", "Armin", "Masiwei", "Dingzheng",  "Melo", "Drake", "Quavo", "Hardwell", "Susan", "Monika", "Sophia", "Harish", "Zenia", "Mela", "Cameron", "Mira", "Anita" };
+	string lastNames[] = { "Shepard", "Bob", "Bobson", "Petersan", "Chang", "Chun", "Chin", "Zhang", "Lee", "Lu", "Liu", "Davan", "Bob", "Peter", "TheGreat", "Ho" };
 
 
 	int lengthFirstName = sizeof(Names) / sizeof(Names[0]);
+	int lengthLastNmae = sizeof(lastNames) / sizeof(lastNames[0]);
 
 	string Name = Names[rand() % lengthFirstName];
+	string lastName = lastNames[rand() % lengthLastNmae];
 
-	string name = Name;
+	string name = Name + " " + lastName;
 
 	return name;
 }
@@ -76,7 +79,7 @@ long long Customer::createRandomCard()
 
 int Customer::createRandomGasGrade() 
 {
-	return (rand() %  (GAS_GRADE_NUM-1) + 1);
+	return (rand() %  (GAS_GRADE_NUM));
 }
 
 double Customer::createRandomVolume() 

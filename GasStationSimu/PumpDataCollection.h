@@ -3,7 +3,7 @@
 #pragma once
 #include "rt.h"
 
-CRendezvous r1("StationRendezvousStart", 12);
+CRendezvous r1("StationRendezvousStart", 16);
 
 enum
 {

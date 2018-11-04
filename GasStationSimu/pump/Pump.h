@@ -1,8 +1,9 @@
 #pragma once
 #include "../rt.h"
+#include "GasTank.h"
 //Name:Yujia Lyu Suheng He	
 //Student Number:55054134 51513133
-CRendezvous r1("StationRendezvousStart", 12);
+CRendezvous r1("StationRendezvousStart", 16);
 
 enum
 {
@@ -33,7 +34,8 @@ private:
 	struct StationInfo station_info_;
 	struct CustomerInfo customer_info_;
 
-	
+	GasTank *gastank_;
+
 	int pump_num_;
 	int storage_;
 	int pos_x_ = 35;
@@ -43,8 +45,9 @@ private:
 	CMutex *pumpIO_mutex_;
 
 public:
-	Pump(int num) 
+	Pump(int num, GasTank *gas_tank) 
 	{
+		this->gastank_ = gas_tank;
 		pump_num_ = num;
 		pumpIO_mutex_ = new CMutex("PumpIo");
 	};
@@ -54,7 +57,7 @@ public:
 		int x = (pump_num_ % 2) * pos_x_;
 		int y = (pump_num_ / 2) * pos_y_ + pos_offset_;
 
-		//int grade = fuelTankStation->GetOctaneGrade(cData.fuelGrade);
+		int grade = gastank_->GetOctaneGrade(customer_info_.gas_grade);
 
 		pumpIO_mutex_->Wait();
 		MOVE_CURSOR(x, y);		printf("                                 ");
@@ -71,7 +74,7 @@ public:
 		MOVE_CURSOR(x, y + 2);	printf("Credit Card: %lld\n", customer_info_.card_number);
 		MOVE_CURSOR(x, y + 3);	printf("Requested Vol.: %3.1f\n", customer_info_.volume);
 		//MOVE_CURSOR(x, y + 4);	printf("Dispensed Vol.: %3.1f\n", data->dispensedVolume);
-		MOVE_CURSOR(x, y + 5);	printf("Fuel Grade: Octane %d\n", customer_info_.gas_grade);
+		MOVE_CURSOR(x, y + 5);	printf("Fuel Grade: Octane %d\n", grade);
 		//MOVE_CURSOR(x, y + 6);	printf("Cost: $%.2f\n", transactionCost * data->dispensedVolume);
 
 		//TEXT_COLOUR(data->pumpStatus, 0);
@@ -79,6 +82,52 @@ public:
 		//TEXT_COLOUR(15, 0);
 
 		fflush(stdout);
+		pumpIO_mutex_->Signal();
+	}
+
+	void PrintEmptyInfo() const
+	{
+		int x = (pump_num_ % 2) * pos_x_;
+		int y = (pump_num_ / 2) * pos_y_ + pos_offset_;
+
+		pumpIO_mutex_->Wait();
+		MOVE_CURSOR(x, y);		printf("                                 ");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 1);	printf("                                 ");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 2);	printf("                                 ");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 3);	printf("                                 ");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 4);	printf("                                 ");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 5);	printf("                                 ");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 6);	printf("                                 ");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 7);	printf("                                 ");
+		fflush(stdout);
+
+		MOVE_CURSOR(x, y);		printf("PUMP %d:                         \n", pump_num_);
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 1);	printf("Customer Name:                   \n");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 2);	printf("Credit Card:                     \n");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 3);	printf("Requested Vol.:                  \n");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 4);	printf("Dispensed Vol.:                  \n");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 5);	printf("Fuel Grade:                      \n");
+		fflush(stdout);
+		MOVE_CURSOR(x, y + 6);	printf("Cost:                            \n");
+		fflush(stdout);
+
+		/*TEXT_COLOUR(data->pumpStatus, 0);
+		MOVE_CURSOR(x, y + 7);	printf("Status: %s\n", ReadStatus(data->pumpStatus).c_str());
+		TEXT_COLOUR(15, 0);*/
+
+		/*fflush(stdout);*/
 		pumpIO_mutex_->Signal();
 	}
 
@@ -109,7 +158,14 @@ public:
 
 		while (true)
 		{
+			while (data_pipeline.TestForData() == 0)
+			{
+				PrintEmptyInfo();
+				SLEEP(100);
+			}
+
 			data_pipeline.Read(&customer_info_, sizeof(struct CustomerInfo));
+
 			PrintCustomeInfo();
 			cs.Wait();
 			//printf("Passing gas grade: %d from Pump ..\n",customer_info_.gas_grade);
