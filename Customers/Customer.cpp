@@ -1,7 +1,7 @@
 #include "Customer.h"
 #include "../GasStationSimu/rt.h"
 
-CRendezvous r1("StationRendezvousStart", 16);
+CRendezvous r1("StationRendezvousStart", 20);
 
 Customer::Customer()
 {
@@ -36,6 +36,7 @@ int Customer::main()
 		mutex_p.Wait();
 		std::cout << "Customer Card is: " << customer_info_.card_number << "\n";
 		std::cout << "Customer Name is: " << customer_info_.name << "\n";
+		std::cout << "Customer volume is: " << customer_info_.volume << std::endl;
 		mutex_p.Signal();
 		mutex.Wait();
 		MyPipe.Write(&customer_info_, sizeof(struct CustomerInfo));
