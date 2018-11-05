@@ -8,7 +8,7 @@
 struct CustomerInfo
 {
 	int gas_grade;
-	int volume;
+	double volume;
 	long long card_number;
 	string name;
 };

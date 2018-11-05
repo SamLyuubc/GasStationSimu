@@ -13,7 +13,7 @@ CRendezvous r1("StationRendezvousStart", 20);
 struct StationInfo
 {
 	int gas_grade;
-	int dispensedvolume;
+	double dispensedvolume;
 	int pump_status;
 	double cost;
 	bool isAuthorized;
@@ -57,7 +57,7 @@ int thread_pumpnum;
 
 bool isAuthorized[NUM_PUMPS];
 bool isCustomerDone[NUM_PUMPS];
-bool isPumpEnabled[NUM_PUMPS];
+//bool isPumpEnabled[NUM_PUMPS];
 
 // Command line and buffer constants
 
@@ -176,9 +176,9 @@ void PrintEmptyPumpDetails(int pumpNumber)
 	printf("Fuel Grade:                        \n");
 	fflush(stdout);
 
-	TEXT_COLOUR(pumpStatus, 0);
+	TEXT_COLOUR(pumpInfoData[pumpNumber]->pump_status, 0);
 	MOVE_CURSOR(x, y + 5);
-	printf("Status: %s\n", ReadPumpStatus(pumpStatus).c_str());
+	printf("Status: %s\n", ReadPumpStatus(pumpInfoData[pumpNumber]->pump_status).c_str());
 	fflush(stdout);
 	TEXT_COLOUR(15, 0);
 
@@ -236,9 +236,9 @@ void PrintPumpDetails(int pumpNumber)
 	printf("Fuel Grade: Octane %d\n", grade);
 	fflush(stdout);
 
-	TEXT_COLOUR(pumpStatus, 0);
+	TEXT_COLOUR(pumpInfoData[pumpNumber]->pump_status, 0);
 	MOVE_CURSOR(x, y + 5);
-	printf("Status: %s\n", ReadPumpStatus(pumpStatus).c_str());
+	printf("Status: %s\n", ReadPumpStatus(pumpInfoData[pumpNumber]->pump_status).c_str());
 	fflush(stdout);
 	TEXT_COLOUR(15, 0);
 
@@ -300,18 +300,18 @@ void WaitForGSCAuthorization(int num)
 	pumpInfoData[num]->isAuthorized = true;
 }
 
-void WaitUntilPumpIsEnabled(int num)
-{
-	// While (Disabled OR No transaction started)
-	while (!isPumpEnabled[num] || PSs[thread_pumpnum]->Read() == 0)
-	{
-		pumpInfoData[num]->isEnabled = isPumpEnabled[num];
-		PrintEmptyPumpDetails(num);
-		SLEEP(100);
-	}
-
-	PrintEmptyPumpDetails(num);
-}
+//void WaitUntilPumpIsEnabled(int num)
+//{
+//	// While (Disabled OR No transaction started)
+//	while (!isPumpEnabled[num] || PSs[thread_pumpnum]->Read() == 0)
+//	{
+//		pumpInfoData[num]->isEnabled = isPumpEnabled[num];
+//		PrintEmptyPumpDetails(num);
+//		SLEEP(100);
+//	}
+//
+//	PrintEmptyPumpDetails(num);
+//}
 
 UINT __stdcall PumpThread(void *args)	// thread function
 {
@@ -321,7 +321,7 @@ UINT __stdcall PumpThread(void *args)	// thread function
 	while (1)
 	{
 		PrintEmptyPumpDetails(thread_pumpnum);
-		WaitUntilPumpIsEnabled(thread_pumpnum);
+		//WaitUntilPumpIsEnabled(thread_pumpnum);
 
 		PSs[thread_pumpnum]->Wait();
 		PrintPumpDetails(thread_pumpnum);
@@ -427,50 +427,50 @@ void processCommand(char *command)
 			ErrorMessage("Invalid pump number");
 		}
 	}
-	else if (0 == _stricmp(command, "E"))
-	{
-		if (0 == _stricmp(gParameters[0], "ALL"))
-		{
-			for (int i = 0; i < NUM_PUMPS; i++)
-			{
-				isPumpEnabled[i] = true;
-			}
+	//else if (0 == _stricmp(command, "E"))
+	//{
+	//	if (0 == _stricmp(gParameters[0], "ALL"))
+	//	{
+	//		for (int i = 0; i < NUM_PUMPS; i++)
+	//		{
+	//			isPumpEnabled[i] = true;
+	//		}
 
-			SuccessMessage("Enabled all pumps");
-		}
-		else if (isPumpNumberCorrect(gParameters[0]))
-		{
-			int pump = atoi(gParameters[0]);
-			isPumpEnabled[pump] = true;
-			SuccessMessage(string("Enabled pump " + to_string(pump)).c_str());
-		}
-		else
-		{
-			ErrorMessage("Invalid pump number");
-		}
-	}
-	else if (0 == _stricmp(command, "D"))
-	{
-		if (0 == _stricmp(gParameters[0], "ALL"))
-		{
-			for (int i = 0; i < NUM_PUMPS; i++)
-			{
-				isPumpEnabled[i] = false;
-			}
+	//		SuccessMessage("Enabled all pumps");
+	//	}
+	//	else if (isPumpNumberCorrect(gParameters[0]))
+	//	{
+	//		int pump = atoi(gParameters[0]);
+	//		isPumpEnabled[pump] = true;
+	//		SuccessMessage(string("Enabled pump " + to_string(pump)).c_str());
+	//	}
+	//	else
+	//	{
+	//		ErrorMessage("Invalid pump number");
+	//	}
+	//}
+	//else if (0 == _stricmp(command, "D"))
+	//{
+	//	if (0 == _stricmp(gParameters[0], "ALL"))
+	//	{
+	//		for (int i = 0; i < NUM_PUMPS; i++)
+	//		{
+	//			isPumpEnabled[i] = false;
+	//		}
 
-			SuccessMessage("Disabled all pumps");
-		}
-		if (isPumpNumberCorrect(gParameters[0]))
-		{
-			int pump = atoi(gParameters[0]);
-			isPumpEnabled[pump] = false;
-			SuccessMessage(string("Disabled pump " + to_string(pump)).c_str());
-		}
-		else
-		{
-			ErrorMessage("Invalid pump number");
-		}
-	}
+	//		SuccessMessage("Disabled all pumps");
+	//	}
+	//	if (isPumpNumberCorrect(gParameters[0]))
+	//	{
+	//		int pump = atoi(gParameters[0]);
+	//		isPumpEnabled[pump] = false;
+	//		SuccessMessage(string("Disabled pump " + to_string(pump)).c_str());
+	//	}
+	//	else
+	//	{
+	//		ErrorMessage("Invalid pump number");
+	//	}
+	//}
 	//else if (0 == _stricmp(command, "TRANS"))
 	//{
 	//	PrintTransactions();
@@ -631,11 +631,20 @@ void Initialize(int threadNums[], CThread *threads[])
 	{
 		isAuthorized[i] = false;
 		isCustomerDone[i] = false;
-		isPumpEnabled[i] = true;
+		//isPumpEnabled[i] = true;
 
-		PSs[i] = new CSemaphore(string("PsPump") + to_string(i), 0, 1);
-		CSs[i] = new CSemaphore(string("CsPump") + to_string(i), 1, 1);
-		pump_dps[i] = new CDataPool(string("DataPoolPump") + to_string(i), sizeof(struct StationInfo));
+		std::string pipe_name, cs_name, ps_name, datapool_name;
+		// ex. MypipPump1
+		pipe_name = "MypipPump" + to_string(i);
+		// ex. CsPump1
+		cs_name = "CsPump" + to_string(i);
+		// ex. PsPump1
+		ps_name = "PsPump" + to_string(i);
+		// ex. DataPoolPump1
+		datapool_name = "DataPoolPump" + to_string(i);
+		PSs[i] = new CSemaphore(ps_name, 0, 1);
+		CSs[i] = new CSemaphore(cs_name, 1, 1);
+		pump_dps[i] = new CDataPool(datapool_name, sizeof(struct StationInfo));
 		pumpInfoData[i] = (struct StationInfo *)(pump_dps[i]->LinkDataPool());
 
 		threadNums[i] = i;

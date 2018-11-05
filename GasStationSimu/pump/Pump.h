@@ -14,7 +14,7 @@ enum
 struct StationInfo
 {
 	int gas_grade;
-	int dispensedvolume;
+	double dispensedvolume;
 	int pump_status;
 	double cost;
 	bool isAuthorized;
@@ -28,7 +28,7 @@ struct StationInfo
 struct CustomerInfo
 {
 	int gas_grade;
-	int volume;
+	double volume;
 	long long card_number;
 	string name;
 };
@@ -159,7 +159,7 @@ public:
 		fflush(stdout);
 
 		TEXT_COLOUR(datapool_ptr->pump_status, 0);
-		MOVE_CURSOR(x, y + 7);	printf("Status: %s\n", ReadStatus(datapool_ptr->pump_status).c_str());
+		MOVE_CURSOR(x, y + 7);	printf("Status: %s\n", ReadStatus( datapool_ptr->pump_status).c_str());
 		TEXT_COLOUR(15, 0);
 
 		fflush(stdout);
@@ -192,6 +192,7 @@ public:
 
 		while (true)
 		{
+			datapool_ptr->pump_status = STATUS_PUMP_WAITING_CUSTOMER;
 			while (data_pipeline.TestForData() == 0)
 			{
 				//datapool_ptr->pump_status = !datapool_ptr->isEnabled ? STATUS_PUMP_DISABLED : STATUS_PUMP_WAITING_CUSTOMER;
@@ -201,6 +202,7 @@ public:
 
 			data_pipeline.Read(&customer_info_, sizeof(struct CustomerInfo));
 			pump_mutex_->Wait();
+
 			datapool_ptr->pump_status = STATUS_PUMP_WAITING_AUTHORIZATION;
 			PrintCustomeInfo();
 
@@ -219,7 +221,8 @@ public:
 			PrintCustomeInfo();
 			cs.Wait();
 			// Reset this for the next customer
-			if (datapool_ptr->isAuthorized) datapool_ptr->isAuthorized = false;
+			if (datapool_ptr->isAuthorized)
+				datapool_ptr->isAuthorized = false;
 
 			datapool_ptr->pump_status = STATUS_PUMP_WAITING_TANK;
 			PrintCustomeInfo();
@@ -251,6 +254,8 @@ public:
 
 			// Signal GSC to say we're done transaction
 			ps.Signal();
+
+			pump_mutex_->Signal();
 		}
 	};
 };
