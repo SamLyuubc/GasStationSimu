@@ -21,12 +21,24 @@
     <ClInclude Include="PumpDataCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="pump\GasTank.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Transaction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="rt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GSC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="pump\GasTank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

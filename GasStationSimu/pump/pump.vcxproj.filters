@@ -21,12 +21,18 @@
     <ClInclude Include="..\rt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GasTank.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\rt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main_pump.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GasTank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -117,10 +117,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="PumpDataCollection.h" />
+    <ClInclude Include="pump\GasTank.h" />
     <ClInclude Include="rt.h" />
+    <ClInclude Include="Transaction.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GSC.cpp" />
     <ClCompile Include="mainWindow.cpp" />
+    <ClCompile Include="pump\GasTank.cpp" />
     <ClCompile Include="rt.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

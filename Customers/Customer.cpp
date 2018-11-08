@@ -1,7 +1,7 @@
 #include "Customer.h"
 #include "../GasStationSimu/rt.h"
 
-CRendezvous r1("StationRendezvousStart", 12);
+CRendezvous r1("StationRendezvousStart", 20);
 
 Customer::Customer()
 {
@@ -32,16 +32,16 @@ int Customer::main()
 	CMutex  mutex(pipeline_name_);
 	CMutex  mutex_p("ScreenCustomer");
 
-	for (int x = 500; x < 10000; x++) {
-		mutex_p.Wait();
-		std::cout << "Customer Card is: " << customer_info_.card_number << "\n";
-		std::cout << "Customer Name is: " << customer_info_.name << "\n";
-		mutex_p.Signal();
-		mutex.Wait();
-		MyPipe.Write(&customer_info_, sizeof(struct CustomerInfo));
-		mutex.Signal();
-		Sleep(2000);
-	}
+
+	mutex_p.Wait();
+	std::cout << "Customer Card is: " << customer_info_.card_number << "\n";
+	std::cout << "Customer Name is: " << customer_info_.name << "\n";
+	std::cout << "Customer volume is: " << customer_info_.volume << std::endl;
+	mutex_p.Signal();
+	mutex.Wait();
+	MyPipe.Write(&customer_info_, sizeof(struct CustomerInfo));
+	mutex.Signal();
+
 
 	return 0;
 }
@@ -49,14 +49,17 @@ int Customer::main()
 string Customer::createRandomName() 
 {
 	//Array of First Names
-	string Names[] = { "Harley", "Rahul", "Armin", "Alexander", "Renee",  "Brandon", "Herman", "Evelyn", "Sasha", "Susan", "Monika", "Sophia", "Harish", "Zenia", "Mela", "Cameron", "Mira", "Anita" };
+	string Names[] = { "Sam", "Tony", "Armin", "Masiwei", "Dingzheng",  "Melo", "Drake", "Quavo", "Hardwell", "Susan", "Monika", "Sophia", "Harish", "Zenia", "Mela", "Cameron", "Mira", "Anita" };
+	string lastNames[] = { "Shepard", "Bob", "Bobson", "Petersan", "Chang", "Chun", "Chin", "Zhang", "Lee", "Lu", "Liu", "Davan", "Bob", "Peter", "TheGreat", "Ho" };
 
 
 	int lengthFirstName = sizeof(Names) / sizeof(Names[0]);
+	int lengthLastNmae = sizeof(lastNames) / sizeof(lastNames[0]);
 
 	string Name = Names[rand() % lengthFirstName];
+	string lastName = lastNames[rand() % lengthLastNmae];
 
-	string name = Name;
+	string name = Name + " " + lastName;
 
 	return name;
 }
@@ -76,7 +79,7 @@ long long Customer::createRandomCard()
 
 int Customer::createRandomGasGrade() 
 {
-	return (rand() %  (GAS_GRADE_NUM-1) + 1);
+	return (rand() %  (GAS_GRADE_NUM));
 }
 
 double Customer::createRandomVolume() 
