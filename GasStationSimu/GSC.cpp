@@ -9,7 +9,7 @@
 #include "Transaction.h"
 #include <vector>
 
-CRendezvous r1("StationRendezvousStart", 20);
+CRendezvous r1("StationRendezvousStart", 16);
 struct StationInfo
 {
 	int gas_grade;

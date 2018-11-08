@@ -123,7 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GSC.cpp" />
-    <ClCompile Include="mainWindow.cpp" />
     <ClCompile Include="pump\GasTank.cpp" />
     <ClCompile Include="rt.cpp" />
   </ItemGroup>

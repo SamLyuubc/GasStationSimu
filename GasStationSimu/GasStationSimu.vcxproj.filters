@@ -32,9 +32,6 @@
     <ClCompile Include="rt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mainWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GSC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

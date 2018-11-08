@@ -1,7 +1,7 @@
 #include "Customer.h"
 #include "../GasStationSimu/rt.h"
 
-CRendezvous r1("StationRendezvousStart", 20);
+CRendezvous r1("StationRendezvousStart", 16);
 
 Customer::Customer()
 {
@@ -9,6 +9,8 @@ Customer::Customer()
 	customer_info_.gas_grade = createRandomGasGrade();
 	customer_info_.name = createRandomName();
 	customer_info_.volume = createRandomVolume();
+	pump_num_ = createRandomPumpNum();
+	customer_is_done_ = false;
 }
 
 Customer::Customer(string pipename)
@@ -27,9 +29,10 @@ Customer::~Customer()
 int Customer::main() 
 {
 	printf("Creating the Customer. Ready to go.....\n");
-	r1.Wait();
-	CPipe	MyPipe(pipeline_name_);							// Create a pipe with the name "Pipe1"
-	CMutex  mutex(pipeline_name_);
+	//r1.Wait();
+	//CPipe	MyPipe(pipeline_name_);							// Create a pipe with the name "Pipe1"
+	CPipe	MyPipe("MypipPump" + to_string(pump_num_));
+	CMutex	mutex(string("Mutex") + string("Pump") + to_string(pump_num_));
 	CMutex  mutex_p("ScreenCustomer");
 
 
@@ -42,8 +45,17 @@ int Customer::main()
 	MyPipe.Write(&customer_info_, sizeof(struct CustomerInfo));
 	mutex.Signal();
 
+	mutex.Wait();
+	customer_is_done_ = true;
+	mutex.Signal();
+	SLEEP(2000); // Give the GasStation simulation time to delete customer object and assign new one
 
 	return 0;
+}
+
+bool Customer::isCustomerDone() 
+{
+	return customer_is_done_;
 }
 
 string Customer::createRandomName() 
@@ -80,6 +92,11 @@ long long Customer::createRandomCard()
 int Customer::createRandomGasGrade() 
 {
 	return (rand() %  (GAS_GRADE_NUM));
+}
+
+int Customer::createRandomPumpNum() 
+{
+	return (rand() % (GAS_PUMP_NUM));
 }
 
 double Customer::createRandomVolume() 

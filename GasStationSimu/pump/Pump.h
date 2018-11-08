@@ -3,7 +3,7 @@
 #include "GasTank.h"
 //Name:Yujia Lyu Suheng He	
 //Student Number:55054134 51513133
-CRendezvous r1("StationRendezvousStart", 20);
+CRendezvous r1("StationRendezvousStart", 16);
 
 enum
 {
@@ -246,8 +246,8 @@ public:
 					datapool_ptr->cost = datapool_ptr->dispensedvolume * transaction_cost_;
 				}
 
-				//ps.Signal();
-				//cs.Wait();
+				ps.Signal();
+				cs.Wait();
 
 				SLEEP(1000);
 			}
