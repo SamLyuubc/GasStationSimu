@@ -246,8 +246,8 @@ public:
 					datapool_ptr->cost = datapool_ptr->dispensedvolume * transaction_cost_;
 				}
 
-				ps.Signal();
-				cs.Wait();
+				//ps.Signal();
+				//cs.Wait();
 
 				SLEEP(1000);
 			}
